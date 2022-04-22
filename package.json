@@ -1,0 +1,28 @@
+{
+  "name": "back-end-part",
+  "version": "1.0.0",
+  "description": "Backend Part For Blog Project",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [
+    "js",
+    "node.js",
+    "express.js",
+    "mongodb"
+  ],
+  "author": "Anas Adnan Derk",
+  "license": "ISC",
+  "engines": {
+    "node": "16.13.0",
+    "npm": "8.1.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "mongoose": "^6.3.1"
+  }
+}
