@@ -14,6 +14,12 @@ const bodyParser = require("body-parser");
 
 app.use(bodyParser.json());
 
+// import routers
+
+const authRouter = require("./routes/authentication/auth.router");
+
+app.use("/",authRouter);
+
 // create server and running it
 
 const port = process.env.PORT || 3000
