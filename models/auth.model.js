@@ -48,4 +48,30 @@ function createNewAccount(userInfo) {
     });
 }
 
-module.exports = { createNewAccount };
+function login(email, password) {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL).then(() => {
+            return UserModel.findOne({email: email});
+        }).then(user => {
+            if (!user) {
+                mongoose.disconnect();
+                reject("عذراً الإيميل الذي ادخلته غير موجود ، رجاءً أدخل إيميل آخر من فضلك ...");
+            } else {
+                bcrypt.compare(password, user.password).then(passwordIsTrue => {
+                    switch(passwordIsTrue){
+                        case true: {
+                            mongoose.disconnect();
+                            resolve(user);
+                        }
+                        default: {
+                            mongoose.disconnect();
+                            reject("كلمة السر التي أدخلتها غير صحيحة ، من فضلك أعد إدخال كلمة السر بشكل صحيح ..");
+                        }
+                    }
+                });
+            }
+        });
+    })
+}
+
+module.exports = { createNewAccount, login };

@@ -9,4 +9,12 @@ function postSignUp(req, res){
     }).catch(err => res.json(err));
 }
 
-module.exports = { postSignUp };
+function getLoginIn(req, res){
+    let email = req.query.email,
+        password = req.query.password;
+    authObject.login(email, password).then(user => {
+        res.json(user);
+    }).catch(err => res.json(err));
+}
+
+module.exports = { postSignUp, getLoginIn };

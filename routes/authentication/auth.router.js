@@ -6,6 +6,10 @@ const authRouter = require("express")();
 
 const authController = require("../../controllers/auth.controller");
 
+// api building For Authentication
+
 authRouter.post("/sign-up", authController.postSignUp);
+
+authRouter.get("/login", authController.getLoginIn);
 
 module.exports = authRouter;
