@@ -28,9 +28,18 @@ const bcrypt = require("bcryptjs");
 
 function createNewAccount(userInfo) {
     return new Promise((resolve, reject) => {
-        mongoose.connect(DB_URL).then(() => {
-            let password = userInfo.password;
-            return bcrypt.hash(password, 10);
+        mongoose.connect(DB_URL)
+        .then(() => {
+            return UserModel.findOne({email: userInfo.email});
+        })
+        .then((user) => {
+            if (user) {
+                mongoose.disconnect();
+                reject("عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...")
+            } else {
+                let password = userInfo.password;
+                return bcrypt.hash(password, 10);
+            }
         })
         .then(encryptedPassword => {
             userInfo.password = encryptedPassword;
@@ -70,6 +79,9 @@ function login(email, password) {
                     }
                 });
             }
+        }).catch((err) => {
+            mongoose.disconnect();
+            reject(err);
         });
     })
 }

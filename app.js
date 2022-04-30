@@ -16,9 +16,9 @@ app.use(bodyParser.json());
 
 // import routers
 
-const authRouter = require("./routes/authentication/auth.router");
+const usersRouter = require("./routes/users.router");
 
-app.use("/",authRouter);
+app.use("/users", usersRouter);
 
 // create server and running it
 
