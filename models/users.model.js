@@ -86,4 +86,42 @@ function login(email, password) {
     })
 }
 
-module.exports = { createNewAccount, login };
+function getUserInfo(userId) {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL).then(() => {
+            return UserModel.findOne({_id: userId});
+        }).then(userInfo => {
+            mongoose.disconnect();
+            resolve(userInfo);
+        }).catch(err => {
+            mongoose.disconnect();
+            reject(err);
+        });
+    });
+}
+
+function updateUserInfo(userId, newUserInfo) {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL)
+        .then(() => {
+            let password = newUserInfo.password;
+            return bcrypt.hash(password, 10);
+        }).then(passwordAfterHashing => {
+            return UserModel.updateOne({ _id: userId }, {
+                userName: newUserInfo.userName,
+                email: newUserInfo.email,
+                firstName: newUserInfo.firstName,
+                middleName: newUserInfo.middleName,
+                password: passwordAfterHashing
+            });
+        }).then(() => {
+            mongoose.disconnect();
+            resolve()
+        }).catch(err => {
+            mongoose.disconnect();
+            reject(err);
+        });
+    });
+}
+
+module.exports = { createNewAccount, login, getUserInfo, updateUserInfo };
