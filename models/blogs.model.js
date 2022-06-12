@@ -57,4 +57,63 @@ function getAllBlogs() {
     });
 }
 
-module.exports = { addNewBlog, getAllBlogs }
+// Define Get Specification Blog Function
+
+function getBlogInfo(blogId) {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL)
+        .then(() => {
+            return BlogModel.findById(blogId);
+        })
+        .then(blogInfo => {
+            mongoose.disconnect();
+            resolve(blogInfo);
+        })
+        .catch(err => {
+            mongoose.disconnect();
+            reject(err);
+        })
+    });
+}
+
+// Define Edit Specification Blog Function
+
+function editBlogInfo(blogId, newBlogInfo) {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL)
+        .then(() => {
+            return BlogModel.updateOne({_id: blogId}, {
+                blogTitle: newBlogInfo.blogTitle,
+                blogContent: newBlogInfo.blogContent,
+            })
+            .then(() => {
+                mongoose.disconnect();
+                resolve();
+            })
+            .catch(err => {
+                mongoose.disconnect();
+                reject(err);
+            })
+        })
+    });
+}
+
+// Define Delete Specification Blog Function
+
+function deleteBlog(blogId) {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL).then(() => {
+            return BlogModel.deleteOne({ _id: blogId});
+        })
+        .then(() => {
+            mongoose.disconnect();
+            resolve();
+        })
+        .catch(err => {
+            mongoose.disconnect();
+            reject(err);
+        })
+    });
+}
+
+module.exports = { addNewBlog, getAllBlogs, getBlogInfo, editBlogInfo, deleteBlog };

@@ -10,6 +10,12 @@ const blogsController = require("../controllers/blogs.controller");
 
 blogsRouter.get("/all-blogs", blogsController.getAllBlogs);
 
-blogsRouter.post("/add-new-blog", blogsController.postBlog);
+blogsRouter.post("/", blogsController.postBlog);
+
+blogsRouter.get("/", blogsController.getBlogInfo);
+
+blogsRouter.put("/:blogId", blogsController.putBlogInfo);
+
+blogsRouter.delete("/:blogId", blogsController.deleteBlog);
 
 module.exports = blogsRouter;
