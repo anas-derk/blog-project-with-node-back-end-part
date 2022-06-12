@@ -1,6 +1,6 @@
 // create users router
 
-const usersRouter = require("express")();
+const usersRouter = require("express").Router();
 
 // import usersController
 
