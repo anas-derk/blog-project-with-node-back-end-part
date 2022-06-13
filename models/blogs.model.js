@@ -116,4 +116,29 @@ function deleteBlog(blogId) {
     });
 }
 
-module.exports = { addNewBlog, getAllBlogs, getBlogInfo, editBlogInfo, deleteBlog };
+// Define Get Blogs By User Id Function
+
+function getBlogsByUserId(userId) {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL).then(() => {
+            return BlogModel.find({userId});
+        })
+        .then(blogs => {
+            mongoose.disconnect();
+            resolve(blogs);
+        })
+        .catch(err => {
+            mongoose.disconnect();
+            reject(err);
+        });
+    });
+}
+
+module.exports = {
+    addNewBlog,
+    getAllBlogs,
+    getBlogInfo,
+    editBlogInfo,
+    deleteBlog,
+    getBlogsByUserId
+};

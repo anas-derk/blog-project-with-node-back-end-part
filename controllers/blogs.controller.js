@@ -47,4 +47,18 @@ function deleteBlog(req, res) {
     }).catch(err => console.log(err));
 }
 
-module.exports = { postBlog , getAllBlogs, getBlogInfo, putBlogInfo, deleteBlog };
+function getBlogsByUserId(req, res) {
+    let userId = req.query.userId;
+    blogObject.getBlogsByUserId(userId).then(blogs => {
+        res.json(blogs);
+    }).catch(err => console.log(err));
+} 
+
+module.exports = {
+    postBlog,
+    getAllBlogs,
+    getBlogInfo,
+    putBlogInfo,
+    deleteBlog,
+    getBlogsByUserId
+};

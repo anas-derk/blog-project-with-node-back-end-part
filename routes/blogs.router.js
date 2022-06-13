@@ -18,4 +18,6 @@ blogsRouter.put("/:blogId", blogsController.putBlogInfo);
 
 blogsRouter.delete("/:blogId", blogsController.deleteBlog);
 
+blogsRouter.get("/user-blogs", blogsController.getBlogsByUserId);
+
 module.exports = blogsRouter;
