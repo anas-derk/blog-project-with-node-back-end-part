@@ -17,11 +17,14 @@ app.use(bodyParser.json());
 // import routers
 
 const   usersRouter = require("./routes/users.router"),
-        blogsRouter = require("./routes/blogs.router");
+        blogsRouter = require("./routes/blogs.router"),
+        commentsRouter = require("./routes/comments.router");
 
 app.use("/users", usersRouter);
 
 app.use("/blogs", blogsRouter );
+
+app.use("/comments", commentsRouter);
 
 // create server and running it
 
