@@ -134,11 +134,30 @@ function getBlogsByUserId(userId) {
     });
 }
 
+// Define Get Last Five Blogs Function
+
+function getLastFiveBlogs() {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL).then(() => {
+            return BlogModel.find({}).limit(5).sort({ blogPostDate: -1 });
+        })
+        .then(lastFiveBlogs => {
+            mongoose.disconnect();
+            resolve(lastFiveBlogs);
+        })
+        .catch(err => {
+            mongoose.disconnect();
+            reject(err);
+        })
+    });
+}
+
 module.exports = {
     addNewBlog,
     getAllBlogs,
     getBlogInfo,
     editBlogInfo,
     deleteBlog,
-    getBlogsByUserId
+    getBlogsByUserId,
+    getLastFiveBlogs
 };

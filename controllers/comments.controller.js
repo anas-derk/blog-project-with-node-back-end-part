@@ -16,7 +16,14 @@ function getCommentsByBlogId(req, res) {
     }).catch(err => console.log(err));
 }
 
+function getLastFiveCommments(req, res) {
+    CommentObject.getLastFiveCommments().then(lastFiveComments => {
+        res.json(lastFiveComments);
+    }).catch(err => console.log(err));
+}
+
 module.exports = {
     postComment,
-    getCommentsByBlogId
+    getCommentsByBlogId,
+    getLastFiveCommments
 };

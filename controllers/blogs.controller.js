@@ -52,7 +52,13 @@ function getBlogsByUserId(req, res) {
     blogObject.getBlogsByUserId(userId).then(blogs => {
         res.json(blogs);
     }).catch(err => console.log(err));
-} 
+}
+
+function getLastFiveBlogs(req, res){
+    blogObject.getLastFiveBlogs().then(lastFiveBlogs => {
+        res.json(lastFiveBlogs);
+    }).catch(err => console.log(err));
+}
 
 module.exports = {
     postBlog,
@@ -60,5 +66,6 @@ module.exports = {
     getBlogInfo,
     putBlogInfo,
     deleteBlog,
-    getBlogsByUserId
+    getBlogsByUserId,
+    getLastFiveBlogs
 };

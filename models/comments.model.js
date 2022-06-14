@@ -42,6 +42,8 @@ function addNewComment(commentInfo) {
     });
 }
 
+// define get comments by blog id function
+
 function getCommentsByBlogId(blogId) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL).then(() => {
@@ -56,7 +58,23 @@ function getCommentsByBlogId(blogId) {
     });
 }
 
+function getLastFiveCommments(){
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL).then(() => {
+            return CommentModel.find({}).limit(5).sort({ commentPostDate: -1 });
+        })
+        .then(lastFiveComments => {
+            mongoose.disconnect();
+            resolve(lastFiveComments);
+        })
+        .catch(err => {
+            mongoose.disconnect();
+            reject(err);
+        })
+    });
+}
 module.exports = {
     addNewComment,
-    getCommentsByBlogId
+    getCommentsByBlogId,
+    getLastFiveCommments
 }
