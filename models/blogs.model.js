@@ -159,5 +159,6 @@ module.exports = {
     editBlogInfo,
     deleteBlog,
     getBlogsByUserId,
-    getLastFiveBlogs
+    getLastFiveBlogs,
+    BlogModel
 };

@@ -6,7 +6,7 @@ function postComment(req, res) {
     let commentInfo = req.body;
     CommentObject.addNewComment(commentInfo).then(() => {
         res.json();
-    }).catch(err => console.log(err));
+    }).catch(err => res.json(err));
 }
 
 function getCommentsByBlogId(req, res) {

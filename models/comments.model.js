@@ -23,13 +23,25 @@ const commentSchema = mongoose.Schema({
 
 let CommentModel = mongoose.model("comment", commentSchema);
 
+// required Blog Model
+
+const { BlogModel } = require("./blogs.model");
+
 // define add new comment function
 
 function addNewComment(commentInfo) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL).then(() => {
-            let comment = new CommentModel(commentInfo);
-            return comment.save();
+            return BlogModel.findById(commentInfo.blogId);
+        })
+        .then(blogInfo => {
+            if (blogInfo) {
+                let comment = new CommentModel(commentInfo);
+                return comment.save();
+            } else {
+                mongoose.disconnect();
+                reject("عذراً لا يمكن إضافة التعليق لأنّ التدوينة  تمّ حذفها ...");
+            }
         })
         .then(() => {
             mongoose.disconnect();
