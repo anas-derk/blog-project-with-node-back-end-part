@@ -106,6 +106,9 @@ function deleteBlog(blogId) {
             return BlogModel.deleteOne({ _id: blogId});
         })
         .then(() => {
+            return mongoose.models.comment.deleteMany({ blogId });
+        })
+        .then(() => {
             mongoose.disconnect();
             resolve();
         })
