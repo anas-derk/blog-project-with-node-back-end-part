@@ -32,4 +32,18 @@ function putUserInfo(req, res) {
     }).catch(err => console.log(err));
 }
 
-module.exports = { postSignUp, getLoginIn, getUserInfo, putUserInfo };
+function deleteAccount(req, res) {
+    let userId = req.params.userId;
+    let email = req.body.email;
+    userObject.deleteAccount(userId, email).then(() => {
+        res.json();
+    }).catch(err => res.json(err));
+}
+
+module.exports = {
+    postSignUp,
+    getLoginIn,
+    getUserInfo,
+    putUserInfo,
+    deleteAccount
+};

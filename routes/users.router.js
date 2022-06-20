@@ -16,4 +16,6 @@ usersRouter.get("/user-info", usersController.getUserInfo);
 
 usersRouter.put("/:userId", usersController.putUserInfo);
 
+usersRouter.delete("/:userId", usersController.deleteAccount);
+
 module.exports = usersRouter;

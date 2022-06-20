@@ -24,7 +24,7 @@ let UserModel = mongoose.model("user", userSchema);
 
 const bcrypt = require("bcryptjs");
 
-// create create new account function
+// define create new account function
 
 function createNewAccount(userInfo) {
     return new Promise((resolve, reject) => {
@@ -57,6 +57,8 @@ function createNewAccount(userInfo) {
     });
 }
 
+// define user login function
+
 function login(email, password) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL).then(() => {
@@ -86,6 +88,8 @@ function login(email, password) {
     })
 }
 
+// define get user info function
+
 function getUserInfo(userId) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL).then(() => {
@@ -99,6 +103,8 @@ function getUserInfo(userId) {
         });
     });
 }
+
+// define edit user info function
 
 function updateUserInfo(userId, newUserInfo) {
     return new Promise((resolve, reject) => {
@@ -124,4 +130,45 @@ function updateUserInfo(userId, newUserInfo) {
     });
 }
 
-module.exports = { createNewAccount, login, getUserInfo, updateUserInfo };
+function deleteAccount(userId, email) {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL).then(() => {
+            // delete user info from users table
+            return UserModel.deleteOne({ _id: userId });
+        })
+        .then(() => {
+            // delete all the comments on blogs by this user
+            return mongoose.models.comment.deleteMany({ email });
+        })
+        .then(() => {
+            // get all blogs realated to this user
+            return mongoose.models.blog.find({ userId })
+        })
+        .then(userBlogsList => {
+            // delete all the comments from people on blogs to this user
+            for(userBlog of userBlogsList) {
+                return mongoose.models.comment.deleteMany({ blogId: userBlog._id });
+            }
+        })
+        .then(() => {
+            // delete all the blogs realated to this user
+            return mongoose.models.blog.deleteMany({ userId });
+        })
+        .then(() => {
+            mongoose.disconnect();
+            resolve();
+        })
+        .catch(err => {
+            mongoose.disconnect();
+            reject(err);
+        })
+    });
+}
+
+module.exports = {
+    createNewAccount,
+    login,
+    getUserInfo,
+    updateUserInfo,
+    deleteAccount
+};
