@@ -22,8 +22,33 @@ function getLastFiveCommments(req, res) {
     }).catch(err => console.log(err));
 }
 
+function getCommentInfo(req, res) {
+    let commentId = req.query.commentId;
+    CommentObject.getCommentInfo(commentId).then(commentInfo => {
+        res.json(commentInfo);
+    }).catch(err => res.json(err));
+}
+
+function putComment(req, res) {
+    let commentId = req.params.commentId;
+    let newCommentContent = req.body.commentContent;
+    CommentObject.editComment(commentId, newCommentContent).then(() => {
+        res.json();
+    }).catch(err => res.json(err));
+}
+
+function deleteComment(req, res) {
+    let commentId = req.params.commentId;
+    CommentObject.deleteComment(commentId).then(() => {
+        res.json();
+    }).catch(err => res.json(err));
+}
+
 module.exports = {
     postComment,
     getCommentsByBlogId,
-    getLastFiveCommments
+    getLastFiveCommments,
+    getCommentInfo,
+    putComment,
+    deleteComment
 };

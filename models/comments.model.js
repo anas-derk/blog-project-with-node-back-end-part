@@ -70,6 +70,8 @@ function getCommentsByBlogId(blogId) {
     });
 }
 
+// define get Last Five Comments function
+
 function getLastFiveCommments(){
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL).then(() => {
@@ -85,8 +87,66 @@ function getLastFiveCommments(){
         })
     });
 }
+
+// define get comment Info function
+
+function getCommentInfo(commentId) {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL).then(() => {
+            return CommentModel.findById(commentId);
+        })
+        .then(commentInfo => {
+            mongoose.disconnect();
+            resolve(commentInfo);
+        })
+        .catch(err => {
+            mongoose.disconnect();
+            reject(err);
+        })
+    });
+}
+
+// define edit comment function
+
+function editComment(commentId, newCommentContent) {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL).then(() => {
+            return CommentModel.updateOne({ _id: commentId }, { commentContent: newCommentContent });
+        })
+        .then(() => {
+            mongoose.disconnect();
+            resolve();
+        })
+        .catch(err => {
+            mongoose.disconnect();
+            reject(err);
+        })
+    });
+}
+
+// define delete comment function
+
+function deleteComment(commentId) {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL).then(() => {
+            return CommentModel.deleteOne({ _id: commentId });
+        })
+        .then(() => {
+            mongoose.disconnect();
+            resolve();
+        })
+        .catch(err => {
+            mongoose.disconnect();
+            reject(err);
+        })
+    });
+}
+
 module.exports = {
     addNewComment,
     getCommentsByBlogId,
-    getLastFiveCommments
+    getLastFiveCommments,
+    getCommentInfo,
+    editComment,
+    deleteComment
 }

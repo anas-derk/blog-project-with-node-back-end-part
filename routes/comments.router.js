@@ -14,4 +14,10 @@ commentsRouter.get("/", commentsController.getCommentsByBlogId);
 
 commentsRouter.get("/last-five-comments", commentsController.getLastFiveCommments);
 
+commentsRouter.get("/user-comment", commentsController.getCommentInfo);
+
+commentsRouter.put("/:commentId", commentsController.putComment);
+
+commentsRouter.delete("/:commentId", commentsController.deleteComment);
+
 module.exports = commentsRouter;
