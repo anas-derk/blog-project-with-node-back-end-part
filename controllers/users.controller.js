@@ -2,14 +2,14 @@
 
 const userObject = require("../models/users.model");
 
-function postSignUp(req, res){
+function postSignUp(req, res) {
     let userInfo = req.body;
     userObject.createNewAccount(userInfo).then(() => {
         res.json();
     }).catch(err => res.json(err));
 }
 
-function getLoginIn(req, res){
+function getLoginIn(req, res) {
     let email = req.query.email,
         password = req.query.password;
     userObject.login(email, password).then(user => {
@@ -35,7 +35,8 @@ function putUserInfo(req, res) {
 function deleteAccount(req, res) {
     let userId = req.params.userId;
     let email = req.body.email;
-    userObject.deleteAccount(userId, email).then(() => {
+    let password = req.body.password;
+    userObject.deleteAccount(userId, email, password).then(() => {
         res.json();
     }).catch(err => res.json(err));
 }
