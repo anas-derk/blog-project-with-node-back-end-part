@@ -50,10 +50,10 @@ function getAllBlogs() {
             mongoose.disconnect();
             resolve(blogs);
         })
-        .catch(err => {
-            mongoose.disconnect();
-            reject(err);
-        });
+            .catch(err => {
+                mongoose.disconnect();
+                reject(err);
+            });
     });
 }
 
@@ -62,17 +62,22 @@ function getAllBlogs() {
 function getBlogInfo(blogId) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL)
-        .then(() => {
-            return BlogModel.findById(blogId);
-        })
-        .then(blogInfo => {
-            mongoose.disconnect();
-            resolve(blogInfo);
-        })
-        .catch(err => {
-            mongoose.disconnect();
-            reject(err);
-        })
+            .then(() => {
+                return BlogModel.findById(blogId);
+            })
+            .then(blogInfo => {
+                if (blogInfo) {
+                    mongoose.disconnect();
+                    resolve(blogInfo);
+                } else {
+                    mongoose.disconnect();
+                    reject("عذراً لا يوجد تدوينة بهذا الاسم ( قد تمّ حذفها أو غير موجودة أبداً )");
+                }
+            })
+            .catch(err => {
+                mongoose.disconnect();
+                reject(err);
+            })
     });
 }
 
@@ -81,10 +86,32 @@ function getBlogInfo(blogId) {
 function editBlogInfo(blogId, newBlogInfo) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL)
-        .then(() => {
-            return BlogModel.updateOne({_id: blogId}, {
-                blogTitle: newBlogInfo.blogTitle,
-                blogContent: newBlogInfo.blogContent,
+            .then(() => {
+                return BlogModel.updateOne({ _id: blogId }, {
+                    blogTitle: newBlogInfo.blogTitle,
+                    blogContent: newBlogInfo.blogContent,
+                })
+                    .then(() => {
+                        mongoose.disconnect();
+                        resolve();
+                    })
+                    .catch(err => {
+                        mongoose.disconnect();
+                        reject(err);
+                    })
+            })
+    });
+}
+
+// Define Delete Specification Blog Function
+
+function deleteBlog(blogId) {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL).then(() => {
+            return BlogModel.deleteOne({ _id: blogId });
+        })
+            .then(() => {
+                return mongoose.models.comment.deleteMany({ blogId });
             })
             .then(() => {
                 mongoose.disconnect();
@@ -94,28 +121,6 @@ function editBlogInfo(blogId, newBlogInfo) {
                 mongoose.disconnect();
                 reject(err);
             })
-        })
-    });
-}
-
-// Define Delete Specification Blog Function
-
-function deleteBlog(blogId) {
-    return new Promise((resolve, reject) => {
-        mongoose.connect(DB_URL).then(() => {
-            return BlogModel.deleteOne({ _id: blogId});
-        })
-        .then(() => {
-            return mongoose.models.comment.deleteMany({ blogId });
-        })
-        .then(() => {
-            mongoose.disconnect();
-            resolve();
-        })
-        .catch(err => {
-            mongoose.disconnect();
-            reject(err);
-        })
     });
 }
 
@@ -124,16 +129,16 @@ function deleteBlog(blogId) {
 function getBlogsByUserId(userId) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL).then(() => {
-            return BlogModel.find({userId});
+            return BlogModel.find({ userId });
         })
-        .then(blogs => {
-            mongoose.disconnect();
-            resolve(blogs);
-        })
-        .catch(err => {
-            mongoose.disconnect();
-            reject(err);
-        });
+            .then(blogs => {
+                mongoose.disconnect();
+                resolve(blogs);
+            })
+            .catch(err => {
+                mongoose.disconnect();
+                reject(err);
+            });
     });
 }
 
@@ -144,14 +149,14 @@ function getLastFiveBlogs() {
         mongoose.connect(DB_URL).then(() => {
             return BlogModel.find({}).limit(5).sort({ blogPostDate: -1 });
         })
-        .then(lastFiveBlogs => {
-            mongoose.disconnect();
-            resolve(lastFiveBlogs);
-        })
-        .catch(err => {
-            mongoose.disconnect();
-            reject(err);
-        })
+            .then(lastFiveBlogs => {
+                mongoose.disconnect();
+                resolve(lastFiveBlogs);
+            })
+            .catch(err => {
+                mongoose.disconnect();
+                reject(err);
+            })
     });
 }
 

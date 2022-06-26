@@ -29,7 +29,7 @@ function getBlogInfo(req, res) {
     let blogId = req.query.blogId;
     blogObject.getBlogInfo(blogId).then(blogInfo => {
         res.json(blogInfo);
-    }).catch(err => console.log(err));
+    }).catch(err => res.json(err));
 }
 
 function putBlogInfo(req, res) {
