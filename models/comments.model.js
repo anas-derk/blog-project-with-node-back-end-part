@@ -12,6 +12,7 @@ const commentSchema = mongoose.Schema({
     userName: String,
     email: String,
     commentContent: String,
+    userId: String,
     blogId: String,
     commentPostDate: {
         type: Date,
@@ -96,8 +97,13 @@ function getCommentInfo(commentId) {
             return CommentModel.findById(commentId);
         })
         .then(commentInfo => {
-            mongoose.disconnect();
-            resolve(commentInfo);
+            if (commentInfo) {
+                mongoose.disconnect();
+                resolve(commentInfo);
+            } else {
+                mongoose.disconnect();
+                reject("عذراً لا يوجد تعليق بهذا الاسم ....");
+            }
         })
         .catch(err => {
             mongoose.disconnect();
