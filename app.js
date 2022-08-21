@@ -20,11 +20,11 @@ const   usersRouter = require("./routes/users.router"),
         blogsRouter = require("./routes/blogs.router"),
         commentsRouter = require("./routes/comments.router");
 
-app.use("/users", usersRouter);
+app.use("/api/users", usersRouter);
 
-app.use("/blogs", blogsRouter );
+app.use("/api/blogs", blogsRouter );
 
-app.use("/comments", commentsRouter);
+app.use("/api/comments", commentsRouter);
 
 // create server and running it
 
